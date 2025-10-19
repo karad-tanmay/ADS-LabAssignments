@@ -34,7 +34,6 @@ void displayTree(node *root);
 
 
 int main(){
-	printf("test1\n");
 	node *root = NULL;
 	root = insertNode(root, 10);
 	root = insertNode(root, 5);
@@ -55,6 +54,8 @@ int main(){
 	printf("\nIterative Postorder: ");
 	iterativePostorder(root);
 	printf("\n");
+
+	displayTree(root);
 
 	freeBST(root);
 	
@@ -175,4 +176,25 @@ void iterativePostorder(node *root){
 }
 
 // c. ->
-void displayTree(node *root);
+static void print_tree_impl(const node *root, int indent, int gap) {
+    if (!root) return;
+
+    // increase distance between levels
+    indent += gap;
+
+    // print right subtree first
+    print_tree_impl(root->right, indent, gap);
+
+    // print current node
+    putchar('\n');
+    for (int i = gap; i < indent; ++i) putchar(' ');
+    printf("%d", root->val);
+
+    // print left subtree
+    print_tree_impl(root->left, indent, gap);
+}
+
+void displayTree(node *root) {
+    print_tree_impl(root, 0, 4);
+    putchar('\n');
+}
