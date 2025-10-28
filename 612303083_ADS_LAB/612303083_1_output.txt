@@ -1,0 +1,12 @@
+Max Value Node: 17
+Iterative Preorder: 10 5 2 7 15 12 17 
+Iterative Inorder: 2 5 7 10 12 15 17 
+Iterative Postorder: 2 7 5 12 17 15 10 
+
+        17
+    15
+        12
+10
+        7
+    5
+        2

@@ -1,0 +1,39 @@
+1 2 9 5 6 0 4 -1 2 1 15 -10 7 3 8 11 14 13 12 10 
+divide: 1 2 9 5 6 0 4 -1 2 1        15 -10 7 3 8 11 14 13 12 10
+divide: 1 2 9 5 6        0 4 -1 2 1
+divide: 1 2 9        5 6
+divide: 1 2        9
+divide: 1        2
+merge: 1 2
+merge: 1 2 9
+divide: 5        6
+merge: 5 6
+merge: 1 2 5 6 9
+divide: 0 4 -1        2 1
+divide: 0 4        -1
+divide: 0        4
+merge: 0 4
+merge: -1 0 4
+divide: 2        1
+merge: 1 2
+merge: -1 0 1 2 4
+merge: -1 0 1 1 2 2 4 5 6 9
+divide: 15 -10 7 3 8        11 14 13 12 10
+divide: 15 -10 7        3 8
+divide: 15 -10        7
+divide: 15        -10
+merge: -10 15
+merge: -10 7 15
+divide: 3        8
+merge: 3 8
+merge: -10 3 7 8 15
+divide: 11 14 13        12 10
+divide: 11 14        13
+divide: 11        14
+merge: 11 14
+merge: 11 13 14
+divide: 12        10
+merge: 10 12
+merge: 10 11 12 13 14
+merge: -10 3 7 8 10 11 12 13 14 15
+merge: -10 -1 0 1 1 2 2 3 4 5 6 7 8 9 10 11 12 13 14 15

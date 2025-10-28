@@ -1,0 +1,3 @@
+Preorder Traversal: April February January March June May December 
+Inorder Traversal: January February March April May June December 
+Postorder Traversal: January March February May December June April 

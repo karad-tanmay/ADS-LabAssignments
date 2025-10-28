@@ -1,0 +1,8 @@
+Character Codes:
+F (45): 0
+C (12): 100
+D (13): 101
+A (5): 1100
+B (9): 1101
+E (16): 111
+Decoded text: ABAFF
