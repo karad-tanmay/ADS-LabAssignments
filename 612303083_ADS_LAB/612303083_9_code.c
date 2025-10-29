@@ -18,9 +18,12 @@ struct TrieNode {
 
 struct TrieNode *createNode();
 
-void insert(struct TrieNode *root, const char *word);
+void insert(struct TrieNode *root, char *word);
 
-int search(struct TrieNode *root, const char *word);
+int search(struct TrieNode *root, char *word);
+
+void printWords(struct TrieNode *node, char *prefix, int level);
+void autoSuggest(struct TrieNode *root, char *prefix);
 
 void insertDictionary(struct TrieNode *root);
 
@@ -38,6 +41,9 @@ int main() {
     else
         printf("'%s' not found in dictionary.\n", word);
 
+    printf("suggestion for prefix 'mo':\n");
+    autoSuggest(root, "mo");
+
     return 0;
 }
 
@@ -50,7 +56,7 @@ struct TrieNode *createNode() {
     return node;
 }
 
-void insert(struct TrieNode *root, const char *word) {
+void insert(struct TrieNode *root, char *word) {
     struct TrieNode *curr = root;
     for (int i = 0; word[i] != '\0'; i++) {
         char ch = tolower(word[i]);
@@ -63,7 +69,7 @@ void insert(struct TrieNode *root, const char *word) {
     curr->isEndOfWord = 1;
 }
 
-int search(struct TrieNode *root, const char *word) {
+int search(struct TrieNode *root, char *word) {
     struct TrieNode *curr = root;
     for (int i = 0; word[i] != '\0'; i++) {
         char ch = tolower(word[i]);
@@ -77,7 +83,7 @@ int search(struct TrieNode *root, const char *word) {
 }
 
 void insertDictionary(struct TrieNode *root) {
-    const char *dictionary[] = {
+    char *dictionary[] = {
         "apple","banana","grape","orange","pear","peach","cherry","mango","melon","berry",
         "table","chair","sofa","cupboard","shelf","desk","lamp","door","window","floor",
         "book","pen","pencil","notebook","paper","marker","eraser","sharpener","folder","file",
@@ -92,4 +98,37 @@ void insertDictionary(struct TrieNode *root) {
     int n = sizeof(dictionary) / sizeof(dictionary[0]);
     for (int i = 0; i < n; i++)
         insert(root, dictionary[i]);
+}
+
+void printWords(struct TrieNode *node, char *prefix, int level) {
+    if (node->isEndOfWord) {
+        prefix[level] = '\0';
+        printf("%s\n", prefix);
+    }
+    for (int i = 0; i < ALPHABET_SIZE; i++) {
+        if (node->children[i]) {
+            prefix[level] = i + 'a';
+            printWords(node->children[i], prefix, level + 1);
+        }
+    }
+}
+
+void autoSuggest(struct TrieNode *root, char *prefix) {
+    struct TrieNode *curr = root;
+    int len = strlen(prefix);
+
+    for (int i = 0; i < len; i++) {
+        char ch = tolower(prefix[i]);
+        if (ch < 'a' || ch > 'z') continue;
+        int index = ch - 'a';
+        if (!curr->children[index]) {
+            printf("No suggestions found for '%s'\n", prefix);
+            return;
+        }
+        curr = curr->children[index];
+    }
+
+    char buffer[100];
+    strcpy(buffer, prefix);
+    printWords(curr, buffer, strlen(prefix));
 }
