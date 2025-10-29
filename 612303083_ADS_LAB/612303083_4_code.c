@@ -7,21 +7,23 @@ c. Sort based on timestamp
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <unistd.h>
 
 typedef struct node{
-	int val;
+	time_t timestamp;
 	struct node* left, *right, *parent;
 	int color; // 1 -> Red, 0 -> Black
 } node;
 
-node* createNode(int value);
+node* createNode(time_t timestamp);
 
 // a. Insert
-node* insertNode(node *root, int value);
+node* insertNode(node *root, time_t timestamp);
 void fixup(node *root);
 
 // b. Search
-node* searchNode(node *root, int value);
+node* searchNode(node *root, time_t timestamp);
 
 // c. Sort based on timestamp (simply inorder traversal ig)
 void inorder(node *root);
@@ -38,16 +40,15 @@ node* rightRotate(node *root);
 
 int main(){
 	node *root = NULL;
-	root = insertNode(root, 7);
-	root = insertNode(root, 3);
-	root = insertNode(root, 18);
-	root = insertNode(root, 10);
-	root = insertNode(root, 22);
-	root = insertNode(root, 8);
-	root = insertNode(root, 11);
-	root = insertNode(root, 26);
-	root = insertNode(root, 2);
-	root = insertNode(root, 6);
+
+	srand(time(NULL));
+
+	time_t now = time(NULL);
+	time(&now);
+
+	for(int i = 0;i < 12; i++){
+		root = insertNode(root, now + rand() % 1000000);
+	}
 
 	printf("Preorder Traversal: ");
 	preorder(root);
@@ -63,20 +64,20 @@ int main(){
 }
 
 
-node* createNode(int value){
+node* createNode(time_t timestamp){
 	node *nn = (node*)malloc(sizeof(node));
 	if(!nn)
 		return NULL;
 
-	nn->val = value;
+	nn->timestamp = timestamp;
 	nn->color = 1;
 	nn->parent = nn->left = nn->right = NULL;
 
 	return nn;
 }
 
-node* insertNode(node *root, int value){
-    node *newNode = createNode(value);
+node* insertNode(node *root, time_t timestamp){
+    node *newNode = createNode(timestamp);
     if (!root) {
         return newNode;
     }
@@ -86,9 +87,9 @@ node* insertNode(node *root, int value){
 
     while (current != NULL) {
         prev = current;
-        if (value < current->val) {
+        if (timestamp < current->timestamp) {
             current = current->left;
-        } else if (value > current->val) {
+        } else if (timestamp > current->timestamp) {
             current = current->right;
         } else {
             free(newNode);
@@ -96,7 +97,7 @@ node* insertNode(node *root, int value){
         }
     }
 
-    if (value < prev->val) {
+    if (timestamp < prev->timestamp) {
         prev->left = newNode;
     } else {
         prev->right = newNode;
@@ -160,14 +161,14 @@ void fixup(node *root){
     root->color = 0;
 }
 
-node* searchNode(node *root, int value){
+node* searchNode(node *root, time_t timestamp){
 	if(!root)
 		return NULL;
 	
-	if(value < root->val)
-		return searchNode(root->left, value);
-	else if(value > root->val)
-		return searchNode(root->right, value);
+	if(timestamp < root->timestamp)
+		return searchNode(root->left, timestamp);
+	else if(timestamp > root->timestamp)
+		return searchNode(root->right, timestamp);
 	else
 		return root;
 }
@@ -189,7 +190,7 @@ void preorder(node *root){
 	if(!root)
 		return;
 	
-	printf("%d ", root->val);
+	printf("%s ", ctime(&root->timestamp));
 	preorder(root->left);
 	preorder(root->right);
 
@@ -201,7 +202,7 @@ void inorder(node *root){
 		return;
 	
 	inorder(root->left);
-	printf("%d ", root->val);
+	printf("%s ", ctime(&root->timestamp));
 	inorder(root->right);
 
 	return;
@@ -213,7 +214,7 @@ void postorder(node *root){
 	
 	postorder(root->left);
 	postorder(root->right);
-	printf("%d ", root->val);
+	printf("%s ", ctime(&root->timestamp));
 
 	return;
 }
