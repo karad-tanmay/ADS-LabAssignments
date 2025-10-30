@@ -50,25 +50,32 @@ int height(node *root){
 
 // helper func for printing month name
 void printMonth(int month);
+void displayTree(node *root);
 
 
 int main(){
 	node *root = NULL;
+	root = insertNode(root, DEC);
 	root = insertNode(root, JAN);
-	root = insertNode(root, FEB);
 	root = insertNode(root, APR);
 	root = insertNode(root, MAR);
+	root = insertNode(root, JUL);
+	root = insertNode(root, AUG);
+	root = insertNode(root, OCT);
+	root = insertNode(root, FEB);
+	root = insertNode(root, NOV);
 	root = insertNode(root, MAY);
 	root = insertNode(root, JUN);
-	root = insertNode(root, DEC);
 
 	printf("Preorder Traversal: ");
 	preorder(root);
 	printf("\nInorder Traversal: ");
 	inorder(root);
-	printf("\nPostorder Traversal: ");
+	printf("\nPostorder Traversal: ");	
 	postorder(root);
 	printf("\n");
+
+	displayTree(root);
 
 	freeBST(root);
 	
@@ -205,4 +212,27 @@ void printMonth(int month){
 		printf("Invalid Month\n");
 	else
 		printf("%s ", months[month]);
+}
+
+static void print_tree_impl(const node *root, int indent, int gap) {
+    if (!root) return;
+
+    // increase distance between levels
+    indent += gap;
+
+    // print right subtree first
+    print_tree_impl(root->right, indent, gap);
+
+    // print current node
+    putchar('\n');
+    for (int i = gap; i < indent; ++i) putchar(' ');
+    printMonth(root->val);
+
+    // print left subtree
+    print_tree_impl(root->left, indent, gap);
+}
+
+void displayTree(node *root) {
+    print_tree_impl(root, 0, 12);
+    putchar('\n');
 }
